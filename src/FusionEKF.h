@@ -31,6 +31,9 @@ public:
   */
   KalmanFilter ekf_;
 
+protected:
+  Eigen::MatrixXd CalculateQ(double dt, double ax, double ay);
+
 private:
   // check whether the tracking toolbox was initialized or not (first measurement)
   bool is_initialized_;
