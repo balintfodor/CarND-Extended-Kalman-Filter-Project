@@ -87,18 +87,14 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack)
       double sin_phi = sin(phi);
       double px = rho * cos_phi;
       double py = rho * sin_phi;
-      // it is not a true velocity vector but
-      // might be ok for initializing the state
-      double vx = rho_dot * cos_phi;
-      double vy = rho_dot * sin_phi;
 
-      ekf_.x_ << px, py, vx, vy;
+      ekf_.x_ << px, py, 0, 0;
     }
     else if (measurement_pack.sensor_type_ == MeasurementPackage::LASER) {
       ekf_.x_ << measurement_pack.raw_measurements_[0], measurement_pack.raw_measurements_[1], 0, 0;
     }
 
-    ekf_.P_ = CalculateQ(0, noise_ax, noise_ay);
+    ekf_.P_ = MatrixXd::Identity(4, 4);
 
     // done initializing, no need to predict or update
     is_initialized_ = true;
